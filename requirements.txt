@@ -1,3 +1,2 @@
+google-generativeai
 Flask
-requests
-beautifulsoup4
