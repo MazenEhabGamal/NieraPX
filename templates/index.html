@@ -4,48 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NieraPX - Gaming Chatbot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #00ffea;
+            --secondary-color: #ff00ea;
+            --bg-color: #0a0a0a;
+            --text-color: #00ffea;
+            --light-bg: #88b5b1;
+            --light-text: #333333;
+        }
+        
         body {
             font-family: 'Press Start 2P', cursive;
-            background: #0a0a0a;
-            color: #00ffea;
+            background: var(--bg-color);
+            color: var(--text-color);
             text-align: center;
             overflow: hidden;
             transition: background 0.3s, color 0.3s;
         }
+        
         body.light-theme {
-            background: #88b5b1;
-            color: #333333;
+            background: var(--light-bg);
+            color: var(--light-text);
         }
+        
         #chat-container {
             width: 80%;
             max-width: 600px;
             margin: 50px auto;
             padding: 20px;
-            border: 2px solid #00ffea;
-            box-shadow: 0 0 10px #00ffea;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
             border-radius: 10px;
             background: rgba(0, 0, 0, 0.8);
             transition: border-color 0.3s, box-shadow 0.3s;
         }
+        
         .light-theme #chat-container {
-            border-color: #333333;
-            box-shadow: 0 0 10px #333333;
+            border-color: var(--light-text);
+            box-shadow: 0 0 10px var(--light-text);
             background: rgba(255, 255, 255, 0.9);
         }
+        
         #messages {
             height: 300px;
             overflow-y: auto;
-            border-bottom: 2px solid #00ffea;
+            border-bottom: 2px solid var(--primary-color);
             padding: 10px;
             text-align: left;
             transition: border-color 0.3s;
         }
+        
         .light-theme #messages {
-            border-color: #333333;
+            border-color: var(--light-text);
         }
+        
         .message {
             background: rgba(0, 255, 234, 0.2);
             padding: 10px;
@@ -53,123 +67,141 @@
             border-radius: 5px;
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            animation: fadeIn 0.5s ease-out forwards;
         }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .light-theme .message {
             background: rgba(0, 0, 0, 0.1);
         }
-        .message.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        
         .user-message {
             background: rgba(0, 255, 234, 0.2);
-            color: #00ffea;
+            color: var(--primary-color);
         }
+        
         .light-theme .user-message {
             background: rgba(0, 0, 0, 0.1);
-            color: #333333;
+            color: var(--light-text);
         }
+        
         .bot-message {
             background: rgba(255, 0, 234, 0.2);
-            color: #ff00ea;
+            color: var(--secondary-color);
         }
+        
         .light-theme .bot-message {
             background: rgba(0, 0, 0, 0.1);
-            color: #333333;
+            color: var(--light-text);
         }
+        
         #userInput {
             width: calc(100% - 90px);
             padding: 10px;
-            border: 2px solid #00ffea;
+            border: 2px solid var(--primary-color);
             background: black;
-            color: #00ffea;
+            color: var(--primary-color);
             font-family: 'Press Start 2P', cursive;
             transition: border-color 0.3s, background 0.3s, color 0.3s;
         }
+        
         .light-theme #userInput {
-            border-color: #333333;
+            border-color: var(--light-text);
             background: #ffffff;
-            color: #333333;
+            color: var(--light-text);
         }
+        
         button {
             width: 80px;
             padding: 10px;
-            background: #00ffea;
+            background: var(--primary-color);
             border: none;
             cursor: pointer;
             transition: 0.3s;
             font-family: 'Orbitron', sans-serif;
             font-size: 14px;
-            color: #0a0a0a;
+            color: var(--bg-color);
         }
+        
         button:hover {
-            background: #ff00ea;
+            background: var(--secondary-color);
             transform: scale(1.1);
         }
+        
         @keyframes floating {
             0% { transform: translateY(0px); }
             50% { transform: translateY(5px); }
             100% { transform: translateY(0px); }
         }
+        
         .floating-text {
             animation: floating 3s infinite ease-in-out;
         }
-        #voiceButton, #muteButton, #settingsButton, #helpButton {
+        
+        .control-button {
             margin-top: 10px;
             padding: 10px;
             cursor: pointer;
             transition: 0.3s;
             font-family: 'Orbitron', sans-serif;
         }
+        
         #voiceButton {
             background: #f33d83;
             color: #ffffff;
         }
+        
         #voiceButton:hover {
             background: #8f1745;
         }
+        
         #muteButton {
             background: #cb0707; 
             color: #ffffff;
         }
+        
         #muteButton:hover {
             background: #7a0b0b;
         }
-        #settingsButton {
-            background: #00ffea;
-            color: #0a0a0a;
+        
+        #settingsButton, #helpButton {
+            background: var(--primary-color);
+            color: var(--bg-color);
         }
-        #settingsButton:hover {
-            background: #ff00ea;
+        
+        #settingsButton:hover, #helpButton:hover {
+            background: var(--secondary-color);
         }
-        #helpButton {
-            background: #00ffea;
-            color: #0a0a0a;
-        }
-        #helpButton:hover {
-            background: #ff00ea;
-        }
-        #settingsMenu, #helpMenu {
+        
+        .menu {
             display: none;
             margin-top: 10px;
             padding: 10px;
-            border: 2px solid #00ffea;
+            border: 2px solid var(--primary-color);
             border-radius: 5px;
             background: rgba(0, 0, 0, 0.8);
             transition: border-color 0.3s, background 0.3s;
         }
-        .light-theme #settingsMenu, .light-theme #helpMenu {
-            border-color: #333333;
+        
+        .light-theme .menu {
+            border-color: var(--light-text);
             background: rgba(255, 255, 255, 0.9);
         }
-        #settingsMenu label, #helpMenu p {
+        
+        .menu label, .menu p {
             display: block;
             margin: 5px 0;
-            color: #00ffea;
+            color: var(--primary-color);
         }
-        .light-theme #settingsMenu label, .light-theme #helpMenu p {
-            color: #333333;
+        
+        .light-theme .menu label, .light-theme .menu p {
+            color: var(--light-text);
         }
     </style>
 </head>
@@ -177,15 +209,15 @@
     <div id="chat-container">
         <h2 class="floating-text">🎮 NieraPX 🎮</h2>
         <div id="messages"></div>
-        <input type="text" id="userInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
-        <button onclick="sendMessage()">Send</button>
-        <button id="voiceButton" onclick="startSpeechRecognition()">Voice</button>
-        <button id="muteButton" onclick="toggleMute()">Mute</button>
-        <button id="settingsButton" onclick="toggleSettings()">Settings</button>
-        <button id="helpButton" onclick="toggleHelp()">Help</button>
+        <input type="text" id="userInput" placeholder="Type a message..." aria-label="Type a message">
+        <button aria-label="Send message" id="sendButton">Send</button>
+        <button id="voiceButton" class="control-button" aria-label="Voice input">Voice</button>
+        <button id="muteButton" class="control-button" aria-label="Mute/unmute">Mute</button>
+        <button id="settingsButton" class="control-button" aria-label="Open settings">Settings</button>
+        <button id="helpButton" class="control-button" aria-label="Open help">Help</button>
 
         <!-- Settings Menu -->
-        <div id="settingsMenu">
+        <div id="settingsMenu" class="menu">
             <label>
                 Pitch: <input type="range" id="pitchSlider" min="0.5" max="2" step="0.1" value="1.0">
             </label>
@@ -198,13 +230,13 @@
             <label>
                 Mute Keybind: <input type="text" id="muteKeybind" value="Shift + F2">
             </label>
-            <button onclick="testVoice()">Test Voice</button>
-            <button onclick="toggleTheme()">Toggle Theme</button>
-            <button onclick="resetToDefault()">Reset to Default</button>
+            <button id="testVoiceButton">Test Voice</button>
+            <button id="toggleThemeButton">Toggle Theme</button>
+            <button id="resetButton">Reset to Default</button>
         </div>
 
         <!-- Help Menu -->
-        <div id="helpMenu">
+        <div id="helpMenu" class="menu">
             <p><strong>Hotkeys:</strong></p>
             <p>Voice Input: <kbd id="voiceKeybindDisplay">Shift + F1</kbd></p>
             <p>Mute/Unmute: <kbd id="muteKeybindDisplay">Shift + F2</kbd></p>
@@ -212,41 +244,110 @@
             <p>Adjust voice pitch and rate, test the voice, and toggle themes.</p>
         </div>
     </div>
+    <!-- Remove the original <script>...</script> block and add this before the closing </body> tag -->
+    <script src="renderer.js"></script>
     <script>
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        // Initialize variables and check for Electron
+        let ipcRenderer;
+        try {
+            ipcRenderer = require('electron').ipcRenderer;
+        } catch (error) {
+            console.warn('Electron ipcRenderer not available. Running in a non-Electron environment.');
+        }
+
+        // Initialize speech recognition
+        const recognition = 'SpeechRecognition' in window 
+            ? new SpeechRecognition() 
+            : new webkitSpeechRecognition();
         recognition.continuous = false;
         recognition.interimResults = false;
         recognition.lang = "en-US";
 
+        // Initialize speech synthesis
         const synth = window.speechSynthesis;
         let isMuted = false;
         let selectedVoice = null;
         let pitch = 1.0;
         let rate = 1.0;
-        let voiceKeybind = "Shift + F1"; // Updated default keybind
-        let muteKeybind = "Shift + F2"; // Updated default keybind
+        let voiceKeybind = "Shift + F1";
+        let muteKeybind = "Shift + F2";
         let currentUtterance = null;
 
-        // Arcade beep sound
-        function playArcadeBeep() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
+        // Cache DOM elements for better performance
+        const elements = {
+            userInput: document.getElementById("userInput"),
+            messages: document.getElementById("messages"),
+            voiceButton: document.getElementById("voiceButton"),
+            muteButton: document.getElementById("muteButton"),
+            settingsMenu: document.getElementById("settingsMenu"),
+            helpMenu: document.getElementById("helpMenu"),
+            pitchSlider: document.getElementById("pitchSlider"),
+            rateSlider: document.getElementById("rateSlider"),
+            voiceKeybindInput: document.getElementById("voiceKeybind"),
+            muteKeybindInput: document.getElementById("muteKeybind"),
+            voiceKeybindDisplay: document.getElementById("voiceKeybindDisplay"),
+            muteKeybindDisplay: document.getElementById("muteKeybindDisplay")
+        };
 
-            oscillator.type = "square"; // Retro-style sound
-            oscillator.frequency.setValueAtTime(isMuted ? 220 : 440, audioContext.currentTime); // Low pitch for mute, high for unmute
-            gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+        // Event listeners
+        document.getElementById("sendButton").addEventListener("click", sendMessage);
+        document.getElementById("voiceButton").addEventListener("click", startSpeechRecognition);
+        document.getElementById("muteButton").addEventListener("click", toggleMute);
+        document.getElementById("settingsButton").addEventListener("click", () => toggleMenu("settingsMenu"));
+        document.getElementById("helpButton").addEventListener("click", () => toggleMenu("helpMenu"));
+        document.getElementById("testVoiceButton").addEventListener("click", testVoice);
+        document.getElementById("toggleThemeButton").addEventListener("click", toggleTheme);
+        document.getElementById("resetButton").addEventListener("click", resetToDefault);
+        elements.userInput.addEventListener("keypress", handleKeyPress);
+        elements.pitchSlider.addEventListener("input", e => pitch = parseFloat(e.target.value));
+        elements.rateSlider.addEventListener("input", e => rate = parseFloat(e.target.value));
+        elements.voiceKeybindInput.addEventListener("input", updateVoiceKeybind);
+        elements.muteKeybindInput.addEventListener("input", updateMuteKeybind);
 
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+        // Handle keyboard shortcuts
+        document.addEventListener("keydown", (e) => {
+            if (e.shiftKey && e.key === "F1") {
+                startSpeechRecognition();
+            }
+            if (e.shiftKey && e.key === "F2") {
+                toggleMute();
+            }
+        });
 
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.1); // Short beep (100ms)
+        // Setup Electron IPC listeners if available
+        if (ipcRenderer) {
+            ipcRenderer.on('voice-input', () => {
+                console.log("Voice input shortcut triggered");
+                startSpeechRecognition();
+            });
+
+            ipcRenderer.on('toggle-mute', () => {
+                console.log("Mute toggle shortcut triggered");
+                toggleMute();
+            });
         }
 
-        // Set preferred voice
+        // Initialize voices when available
+        synth.onvoiceschanged = setPreferredVoice;
+
+        // Initialize the UI with a welcome message
+        window.addEventListener('DOMContentLoaded', () => {
+            addMessage("Welcome to NieraPX! How can I assist you with your gaming needs?", "bot-message");
+        });
+
+        // Speech recognition handlers
+        recognition.onresult = (event) => {
+            elements.userInput.value = event.results[0][0].transcript;
+            sendMessage();
+        };
+
+        recognition.onend = () => {
+            elements.voiceButton.textContent = "Voice";
+        };
+
+        // Functions
         function setPreferredVoice() {
-            let voices = synth.getVoices();
+            const voices = synth.getVoices();
             if (!voices.length) {
                 setTimeout(setPreferredVoice, 100);
                 return;
@@ -257,97 +358,83 @@
             ) || voices[0];
         }
 
-        // Handle key press for input
         function handleKeyPress(event) {
             if (event.key === "Enter") {
                 sendMessage();
             }
         }
 
-        // Send message to backend
         function sendMessage() {
-            const input = document.getElementById("userInput");
-            const message = input.value.trim();
-            if (message) {
-                addMessage(message, "user-message");
+            const message = elements.userInput.value.trim();
+            if (!message) return;
+            
+            addMessage(message, "user-message");
 
-                fetch("/chat", {
+            // Use a modern fetch with async/await pattern
+            fetchBotResponse(message).catch(error => {
+                console.error("Error:", error);
+                addMessage("Failed to get a response from the server.", "bot-message");
+            });
+
+            elements.userInput.value = "";
+        }
+
+        async function fetchBotResponse(message) {
+            try {
+                const response = await fetch("/chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ message: message }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    let cleanResponse = data.response.replace(/\*\*/g, ""); // Remove asterisks
-                    addMessage(cleanResponse, "bot-message");
-                    if (!isMuted) {
-                        speakResponse(cleanResponse); // Speak cleaned text
-                    }
                 });
-
-                input.value = "";
+                
+                const data = await response.json();
+                const cleanResponse = data.response.replace(/\*\*/g, "");
+                addMessage(cleanResponse, "bot-message");
+                
+                if (!isMuted) {
+                    speakResponse(cleanResponse);
+                }
+            } catch (error) {
+                throw error;
             }
         }
 
-        // Add message to chat
         function addMessage(text, className) {
-            const messagesDiv = document.getElementById("messages");
             const messageElement = document.createElement("div");
             messageElement.classList.add("message", className);
             messageElement.innerText = text;
-            messagesDiv.appendChild(messageElement);
-            setTimeout(() => messageElement.classList.add("show"), 100);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            elements.messages.appendChild(messageElement);
+            elements.messages.scrollTop = elements.messages.scrollHeight;
         }
 
-        // Start speech recognition
         function startSpeechRecognition() {
             recognition.start();
-            document.getElementById("voiceButton").textContent = "Listening...";
+            elements.voiceButton.textContent = "Listening...";
         }
 
-        // Handle speech recognition results
-        recognition.onresult = (event) => {
-            document.getElementById("userInput").value = event.results[0][0].transcript;
-            sendMessage();
-        };
-
-        // Handle speech recognition end
-        recognition.onend = () => {
-            document.getElementById("voiceButton").textContent = "Voice";
-        };
-
-        // Speak response
         function speakResponse(text) {
             if (isMuted) return;
-            synth.cancel(); // Cancel any ongoing speech
+            synth.cancel();
             if (!selectedVoice) setPreferredVoice();
 
             const cleanText = text.replace(/\*\*/g, "");
-            currentUtterance = new SpeechSynthesisUtterance(cleanText); // Store in a global variable
-            currentUtterance.voice = selectedVoice;
-            currentUtterance.pitch = pitch;
-            currentUtterance.rate = rate;
-
-            // Handle long text by splitting into chunks
+            
             if (cleanText.length > 200) {
                 const chunks = splitTextIntoChunks(cleanText, 200);
                 speakChunks(chunks);
             } else {
-                synth.speak(currentUtterance);
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.voice = selectedVoice;
+                utterance.pitch = pitch;
+                utterance.rate = rate;
+                synth.speak(utterance);
             }
         }
 
-        // Split long text into smaller chunks
         function splitTextIntoChunks(text, chunkSize) {
-            const chunks = [];
-            for (let i = 0; i < text.length; i += chunkSize) {
-                chunks.push(text.slice(i, i + chunkSize));
-            }
-            return chunks;
+            return text.match(new RegExp(`.{1,${chunkSize}}`, 'g')) || [];
         }
 
-        // Speak text chunks sequentially
         function speakChunks(chunks, index = 0) {
             if (index >= chunks.length) return;
 
@@ -357,85 +444,80 @@
             currentUtterance.rate = rate;
 
             currentUtterance.onend = () => {
-                speakChunks(chunks, index + 1); // Speak the next chunk
+                speakChunks(chunks, index + 1);
             };
 
             synth.speak(currentUtterance);
         }
 
-        // Toggle mute/unmute
+        function playArcadeBeep() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.type = "square";
+            oscillator.frequency.setValueAtTime(isMuted ? 220 : 440, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime); // Lower volume
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
         function toggleMute() {
             isMuted = !isMuted;
-            document.getElementById("muteButton").textContent = isMuted ? "Unmute" : "Mute";
+            elements.muteButton.textContent = isMuted ? "Unmute" : "Mute";
             if (isMuted) synth.cancel();
-            playArcadeBeep(); // Play arcade beep when toggling mute
+            playArcadeBeep();
         }
 
-        // Toggle settings menu
-        function toggleSettings() {
-            const settingsMenu = document.getElementById("settingsMenu");
-            settingsMenu.style.display = settingsMenu.style.display === "block" ? "none" : "block";
+        function toggleMenu(menuId) {
+            const menu = document.getElementById(menuId);
+            const isVisible = menu.style.display === "block";
+            
+            // Close all menus first
+            document.querySelectorAll('.menu').forEach(m => {
+                m.style.display = "none";
+            });
+            
+            // Then open the requested menu if it wasn't already open
+            if (!isVisible) {
+                menu.style.display = "block";
+            }
         }
 
-        // Toggle help menu
-        function toggleHelp() {
-            const helpMenu = document.getElementById("helpMenu");
-            helpMenu.style.display = helpMenu.style.display === "block" ? "none" : "block";
-        }
-
-        // Test voice
         function testVoice() {
             speakResponse("This is a test of the voice output.");
         }
 
-        // Toggle theme
         function toggleTheme() {
             document.body.classList.toggle("light-theme");
         }
 
-        // Reset to default settings
         function resetToDefault() {
             pitch = 1.0;
             rate = 1.0;
-            voiceKeybind = "Shift + F1"; // Reset to new default
-            muteKeybind = "Shift + F2"; // Reset to new default
-            document.getElementById("pitchSlider").value = pitch;
-            document.getElementById("rateSlider").value = rate;
-            document.getElementById("voiceKeybind").value = voiceKeybind;
-            document.getElementById("muteKeybind").value = muteKeybind;
-            document.getElementById("voiceKeybindDisplay").textContent = voiceKeybind;
-            document.getElementById("muteKeybindDisplay").textContent = muteKeybind;
+            voiceKeybind = "Shift + F1";
+            muteKeybind = "Shift + F2";
+            elements.pitchSlider.value = pitch;
+            elements.rateSlider.value = rate;
+            elements.voiceKeybindInput.value = voiceKeybind;
+            elements.muteKeybindInput.value = muteKeybind;
+            elements.voiceKeybindDisplay.textContent = voiceKeybind;
+            elements.muteKeybindDisplay.textContent = muteKeybind;
         }
 
-        // Update pitch and rate
-        document.getElementById("pitchSlider").oninput = (e) => {
-            pitch = parseFloat(e.target.value);
-        };
-        document.getElementById("rateSlider").oninput = (e) => {
-            rate = parseFloat(e.target.value);
-        };
-
-        // Update keybinds
-        document.getElementById("voiceKeybind").oninput = (e) => {
+        function updateVoiceKeybind(e) {
             voiceKeybind = e.target.value;
-            document.getElementById("voiceKeybindDisplay").textContent = voiceKeybind;
-        };
-        document.getElementById("muteKeybind").oninput = (e) => {
+            elements.voiceKeybindDisplay.textContent = voiceKeybind;
+        }
+
+        function updateMuteKeybind(e) {
             muteKeybind = e.target.value;
-            document.getElementById("muteKeybindDisplay").textContent = muteKeybind;
-        };
-
-        // Hotkeys
-        document.addEventListener("keydown", (e) => {
-            if (e.shiftKey && e.key === "F1") { // Shift + F1 for voice input
-                startSpeechRecognition();
-            }
-            if (e.shiftKey && e.key === "F2") { // Shift + F2 for mute/unmute
-                toggleMute();
-            }
-        });
-
-        synth.onvoiceschanged = setPreferredVoice;
+            elements.muteKeybindDisplay.textContent = muteKeybind;
+        }
     </script>
 </body>
 </html>

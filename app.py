@@ -23,6 +23,10 @@ model = genai.GenerativeModel(
     generation_config=generation_config,
 )
 
+# Global variables to track state
+is_speaking = False
+is_listening = False
+
 # Start a chat session with an initial prompt
 chat_session = model.start_chat(
     history=[
@@ -63,7 +67,7 @@ def is_gaming_related(user_message):
         "popular_games": [
             "minecraft", "elden ring", "dark souls", "fallout", "gta", "league of legends",
             "valorant", "csgo", "dota", "fortnite", "warzone", "apex legends", "overwatch",
-            "red dead redemption", "assassin’s creed", "skyrim", "witcher", "cyberpunk", "halo"
+            "red dead redemption", "assassin's creed", "skyrim", "witcher", "cyberpunk", "halo"
         ]
     }
 
@@ -119,7 +123,7 @@ def get_gemini_response(user_message):
 
         # Handle gaming-related questions
         if not is_gaming_related(user_message):
-            return "I'm here to help with gaming-related questions, but feel free to ask me about myself too! 🎮"
+            return "I'm here to help with gaming-related questions, but feel free to ask me about myself too!"
 
         # Store message in session history
         chat_session.history.append({"role": "user", "parts": [user_message]})
@@ -150,6 +154,23 @@ def chat():
         return jsonify({"response": "Please provide a message."}), 400
     response = get_gemini_response(user_message)
     return jsonify({"response": response})
+
+# New routes for handling speech toggle state
+@app.route('/toggle_speak', methods=['POST'])
+def toggle_speak():
+    global is_speaking
+    is_speaking = not is_speaking
+    return jsonify({"status": "success", "speaking": is_speaking})
+
+@app.route('/toggle_listen', methods=['POST'])
+def toggle_listen():
+    global is_listening
+    is_listening = not is_listening
+    return jsonify({"status": "success", "listening": is_listening})
+
+@app.route('/get_status', methods=['GET'])
+def get_status():
+    return jsonify({"speaking": is_speaking, "listening": is_listening})
 
 if __name__ == '__main__':
     app.run(debug=True)
